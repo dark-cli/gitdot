@@ -35,5 +35,19 @@ if [[ -n "$chosen_file" ]]; then
     full_path="$monitor_dir/$chosen_file.conf"
     cp "$full_path" "$target"
     
-    notify-send -u low -i "$iDIR/ja.png" "$chosen_file" "Monitor Profile Loaded"
+    # Reload hyprland config to apply monitor changes
+    hyprctl reload
+    
+    # Wait a moment for reload to complete, then set tablet transform
+    sleep 0.1
+    # Automatically set tablet transform based on profile
+    # If profile contains "270", set tablet transform to 3 (270° rotation)
+    # Otherwise, set it to 0 (normal/no rotation)
+    if [[ "$chosen_file" == *"270"* ]]; then
+        hyprctl keyword input:tablet:transform 3
+        notify-send -u low -i "$iDIR/ja.png" "$chosen_file" "Monitor Profile Loaded\nTablet rotation: 270°"
+    else
+        hyprctl keyword input:tablet:transform 0
+        notify-send -u low -i "$iDIR/ja.png" "$chosen_file" "Monitor Profile Loaded\nTablet rotation: Normal"
+    fi
 fi
