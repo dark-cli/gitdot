@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<policy target="ACCEPT">
+  <short>ZeroTier to LAN</short>
+  <description>Allow forwarding from ZeroTier to LAN and internet</description>
+
+  <ingress-zone name="zerotier"/>
+  <egress-zone name="public"/>
+
+</policy>

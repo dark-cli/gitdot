@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Public</short>
+  <description>Restrictive zone for external interface. Only ZeroTier VPN traffic allowed.</description>
+
+  <!-- Interface binding -->
+  <interface name="enp9s0"/>
+
+  <!-- Only allow ZeroTier to establish VPN connection -->
+  <port port="9993" protocol="udp"/>     <!-- ZeroTier VPN -->
+
+  <!-- Required for network functionality -->
+  <service name="dhcpv6-client"/>
+
+  <!-- Enable forwarding and NAT for ZeroTier gateway -->
+  <forward/>
+  <masquerade/>
+
+  <!-- Stealth mode - silently drop ping requests -->
+  <rule>
+    <icmp-type name="echo-request"/>
+    <drop/>
+  </rule>
+
+</zone>

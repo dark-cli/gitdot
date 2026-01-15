@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<policy target="ACCEPT">
+  <short>LAN to ZeroTier</short>
+  <description>Allow return traffic from LAN back to ZeroTier</description>
+
+  <ingress-zone name="public"/>
+  <egress-zone name="zerotier"/>
+
+</policy>

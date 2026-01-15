@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone target="ACCEPT">
+  <short>Docker</short>
+  <description>Trust all traffic from Docker networks.</description>
+
+  <!-- Docker interfaces -->
+  <interface name="docker0"/>
+  <interface name="br-b54becfe18f8"/>
+  <interface name="br-b682fb8beaf5"/>
+
+</zone>

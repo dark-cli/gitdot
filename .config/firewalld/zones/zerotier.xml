@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>ZeroTier</short>
+  <description>Zone for ZeroTier VPN interface. All personal services are allowed here.</description>
+
+  <!-- Interface binding -->
+  <interface name="ztyjkjucbr"/>
+
+  <!-- Allowed services (add/remove ports as needed) -->
+  <port port="22" protocol="tcp"/>       <!-- SSH -->
+  <port port="3000" protocol="tcp"/>     <!-- OpenWebUI -->
+  <port port="11434" protocol="tcp"/>    <!-- Ollama -->
+  <port port="1883" protocol="tcp"/>     <!-- MQTT -->
+  <port port="4533" protocol="tcp"/>     <!-- Navidrome -->
+  <port port="9993" protocol="udp"/>     <!-- ZeroTier -->
+  <port port="27036" protocol="tcp"/>    <!-- Steam Remote Play -->
+  <port port="27036" protocol="udp"/>    <!-- Steam Remote Play -->
+
+  <!-- Enable forwarding to LAN and internet -->
+  <forward/>
+
+</zone>
