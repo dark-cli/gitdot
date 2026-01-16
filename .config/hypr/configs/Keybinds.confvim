@@ -1,2 +1,0 @@
-bind = $mainMod, Return, exec, alacritty
-
