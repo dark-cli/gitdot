@@ -1,0 +1,14 @@
+[Unit]
+Description=Apply Docker firewall rules (DOCKER-USER chain)
+After=docker.service firewalld.service
+Wants=docker.service
+PartOf=docker.service
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/sleep 10
+ExecStart=/bin/bash /home/max/.config/docker-firewall/apply-rules.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

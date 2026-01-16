@@ -6,4 +6,8 @@ paths = [
     "~/.config/lazydot.toml",
     "~/.icons",
     "~/.tmux.conf",
+    "~/.config/firewalld",
+    "~/.local/share/winbox",
+    "~/.local/open-webui",
+    "~/.config/docker-firewall",
 ]

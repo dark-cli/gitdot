@@ -1,5 +1,5 @@
 dotfolder_path = "~/gitdot"
-paths = ["~/.config/alacritty", "~/.config/hypr", "~/.config/nvim", "~/.p10k.zsh", "~/.config/lazydot.toml", "~/.icons", "~/.tmux.conf", "~/.config/firewalld", "~/.local/share/winbox", "~/.local/navidrome", "~/.local/open-webui"]
+paths = ["~/.config/alacritty", "~/.config/hypr", "~/.config/nvim", "~/.p10k.zsh", "~/.config/lazydot.toml", "~/.icons", "~/.tmux.conf", "~/.config/firewalld", "~/.local/share/winbox", "~/.local/open-webui", "~/.config/docker-firewall"]
 
 [defaults]
 on_duplicate = "overwritehome"

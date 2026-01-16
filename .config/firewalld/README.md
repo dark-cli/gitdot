@@ -55,6 +55,7 @@ sudo ~/.config/docker-firewall/apply-rules.sh
 |------|----------|---------|
 | 22 | tcp | SSH |
 | 3000 | tcp | OpenWebUI |
+| 3001 | tcp | Webpage server |
 | 11434 | tcp | Ollama |
 | 1883 | tcp | MQTT Broker |
 | 4533 | tcp | Navidrome |
