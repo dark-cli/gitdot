@@ -21,6 +21,9 @@ SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration
 
 swww query || swww-daemon --format xrgb && swww img -o $focused_monitor ${RANDOMPICS} $SWWW_PARAMS
 
+# Copy wallpaper for hyprlock
+cp -f "${RANDOMPICS}" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
+
 wait $!
 "$SCRIPTSDIR/WallustSwww.sh" &&
 

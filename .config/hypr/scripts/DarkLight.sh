@@ -129,6 +129,9 @@ fi
 # Update wallpaper using swww command
 $swww "${next_wallpaper}" $effect
 
+# Copy wallpaper for hyprlock
+cp -f "${next_wallpaper}" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
+
 
 # Set Kvantum Manager theme & QT5/QT6 settings
 if [ "$next_mode" = "Dark" ]; then

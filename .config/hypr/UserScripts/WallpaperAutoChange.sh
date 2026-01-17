@@ -32,6 +32,8 @@ while true; do
 		| sort -n | cut -d':' -f2- \
 		| while read -r img; do
 			swww img -o $focused_monitor "$img"
+			# Copy wallpaper for hyprlock
+			cp -f "$img" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
 			# Regenerate colors from the exact image path to avoid cache races
 			$HOME/.config/hypr/scripts/WallustSwww.sh "$img"
 			# Refresh UI components that depend on wallust output
