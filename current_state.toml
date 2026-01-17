@@ -10,4 +10,5 @@ paths = [
     "~/.local/share/winbox",
     "~/.local/open-webui",
     "~/.config/docker-firewall",
+    "~/.config/waybar",
 ]

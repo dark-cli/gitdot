@@ -198,8 +198,9 @@
 		"class<kitty-dropterm>": " ",
 		"class<com.mitchellh.ghostty>": " ",
 		"class<org.wezfurlong.wezterm>": " ",
+		"class<[Aa]lacritty|alacritty-dropterm>": " ",
 
-		"class<[Tt]hunderbird|[Tt]hunderbird-esr>": " ",
+		"class<[Tt]hunderbird|[Tt]hunderbird-esr|net.thunderbird.Thunderbird>": " ",
 		"class<eu.betterbird.Betterbird>": " ",
 		"title<.*gmail.*>": "󰊫 ",
 
@@ -233,7 +234,8 @@
 		"title<virtualbox>": "💽 ",
 		"class<remmina>": "🖥️ ",
 
-		"class<VSCode|code-url-handler|code-oss|codium|codium-url-handler|VSCodium>": "󰨞 ",
+		"class<VSCode|code-url-handler|code-oss|codium|codium-url-handler|VSCodium|[Cc]ode|Code>": "󰨞 ",
+		"class<[Cc]ursor>": "󰨞 ",
 		"class<codeblocks>": "󰅩 ",
 		"title<.*github.*>": " ",
 		"class<mousepad>": " ",
@@ -246,6 +248,8 @@
 		"title<.*figma.*>": " ",
 		"title<.*jira.*>": " ",
 		"class<jetbrains-idea>": " ",
+		"class<jetbrains-pycharm|pycharm>": " ",
+		"class<jetbrains-rustrover|RustRover|rustrover>": " ",
 
 		"class<obs|com.obsproject.Studio>": " ",
 
@@ -257,6 +261,15 @@
 		"class<gimp>": " ",
 		"class<emulator>": "📱 ",
 		"class<android-studio>": " ",
+
+		"class<obsidian|md.obsidian.Obsidian>": "󰇈 ",
+		"class<[Ff]eishin>": "󰎆 ",
+		"class<gnome-system-monitor|org.gnome.SystemMonitor|[Ss]ystem-monitor>": "󰍛 ",
+		"class<[Pp]ara[Vv]iew|paraview>": "󰆧 ",
+		"class<HTTP Toolkit|io.httptoolkit.Httptoolkit>": "󰖟 ",
+		"class<[Xx]ournal.*|com.github.xournalpp.xournalpp>": "󰷈 ",
+		"class<[Ww]in[Bb]ox|WinBox>": "󰀂 ",
+		"class<[Bb]ottles|com.usebottles.bottles>": "󱗆 ",
         
 		}   
 	},
