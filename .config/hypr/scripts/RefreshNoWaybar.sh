@@ -35,6 +35,9 @@ done
 ${SCRIPTSDIR}/WallustSwww.sh
 sleep 0.2
 
+# reload waybar styles (SIGUSR2 reloads CSS without full restart)
+pkill -SIGUSR2 waybar
+
 # reload swaync
 swaync-client --reload-config
 
