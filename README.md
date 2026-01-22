@@ -109,7 +109,7 @@ Personal Linux dotfiles, managed with [lazydot](https://github.com/nickspaargare
 
 ### Ports (ZeroTier zone)
 
-- 22 (SSH), 3000 (OpenWebUI), 3001 (webpage), 11434 (Ollama), 1883 (MQTT), 4533 (Navidrome), 9993 (ZeroTier), 27036 (Steam Remote Play).
+- 22 (SSH), 3000 (OpenWebUI), 3001 (webpage), 8000 (Debts manager app), 11434 (Ollama), 1883 (MQTT), 4533 (Navidrome), 9993 (ZeroTier), 27036 (Steam Remote Play).
 
 ---
 

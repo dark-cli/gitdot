@@ -16,6 +16,9 @@
   <port port="27036" protocol="tcp"/>    <!-- Steam Remote Play -->
   <port port="27036" protocol="udp"/>    <!-- Steam Remote Play -->
   <port port="3001" protocol="tcp"/>     <!-- Webpage server -->
+  <port port="8000" protocol="tcp"/>     <!-- Debts manager app -->
+  <port port="1714" protocol="tcp"/>     <!-- KDE Connect -->
+  <port port="1714" protocol="udp"/>     <!-- KDE Connect -->
 
   <!-- Enable forwarding to LAN and internet -->
   <forward/>
