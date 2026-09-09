@@ -9,10 +9,10 @@ hl.monitor({
     transform = 1
 })
 
--- ASUS primary monitor: 2560x1440
+-- ASUS primary monitor: Always 2560x1440@165Hz
 hl.monitor({
     output = "DP-2",
-    mode = "2560x1440@143.97",
+    mode = "2560x1440@165.0",
     position = "1154x0",
     scale = 1.0,
     vrr = 1

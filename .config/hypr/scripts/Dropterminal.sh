@@ -42,10 +42,10 @@ fi
 
 TERMINAL_CMD="$1"
 
-# Debug echo function
+# Debug echo function - outputs to stderr so it won't be captured by command substitution
 debug_echo() {
   if [ "$DEBUG" = true ]; then
-    echo "$@"
+    echo "$@" >&2
   fi
 }
 
@@ -93,11 +93,25 @@ animate_fade_out() {
 
 # Function to get monitor info including scale and name of focused monitor
 get_monitor_info() {
-  local monitor_data=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.x) \(.y) \(.width) \(.height) \(.scale) \(.name)"')
+  local monitor_data=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select(.focused == true) | "\(.x) \(.y) \(.width) \(.height) \(.scale) \(.name)"' 2>/dev/null)
+
   if [ -z "$monitor_data" ] || [[ "$monitor_data" =~ ^null ]]; then
-    debug_echo "Error: Could not get focused monitor information"
+    debug_echo "Error: Could not get focused monitor information, trying fallback"
+    # Fallback: get any available monitor
+    monitor_data=$(hyprctl monitors -j 2>/dev/null | jq -r '.[0] | "\(.x) \(.y) \(.width) \(.height) \(.scale) \(.name)"' 2>/dev/null)
+    if [ -z "$monitor_data" ] || [[ "$monitor_data" =~ ^null ]]; then
+      debug_echo "Error: Fallback also failed"
+      return 1
+    fi
+  fi
+
+  # Validate we have at least 6 fields (x y width height scale name)
+  local field_count=$(echo "$monitor_data" | wc -w)
+  if [ "$field_count" -lt 6 ]; then
+    debug_echo "Error: Monitor data incomplete ($field_count fields, expected 6): $monitor_data"
     return 1
   fi
+
   echo "$monitor_data"
 }
 
@@ -118,7 +132,14 @@ calculate_dropdown_position() {
   local mon_scale=$(echo $monitor_info | cut -d' ' -f5)
   local mon_name=$(echo $monitor_info | cut -d' ' -f6)
 
-  debug_echo "Monitor info: x=$mon_x, y=$mon_y, width=$mon_width, height=$mon_height, scale=$mon_scale"
+  # Validate all values were parsed correctly
+  if [ -z "$mon_x" ] || [ -z "$mon_y" ] || [ -z "$mon_width" ] || [ -z "$mon_height" ] || [ -z "$mon_scale" ] || [ -z "$mon_name" ]; then
+    debug_echo "Error: Failed to parse monitor info. Raw data: $monitor_info"
+    debug_echo "Parsed: x=$mon_x, y=$mon_y, width=$mon_width, height=$mon_height, scale=$mon_scale, name=$mon_name"
+    return 1
+  fi
+
+  debug_echo "Monitor info: x=$mon_x, y=$mon_y, width=$mon_width, height=$mon_height, scale=$mon_scale, name=$mon_name"
 
   # Validate scale value and provide fallback
   if [ -z "$mon_scale" ] || [ "$mon_scale" = "null" ] || [ "$mon_scale" = "0" ]; then
@@ -167,6 +188,28 @@ calculate_dropdown_position() {
   debug_echo "Window size: ${width}x${height} (logical pixels)"
   debug_echo "Final position: x=$final_x, y=$final_y (logical coordinates)"
   debug_echo "Hyprland will scale these to physical coordinates automatically"
+
+  # Validate that calculated values are reasonable numbers
+  if ! [[ "$final_x" =~ ^-?[0-9]+$ ]]; then
+    debug_echo "Error: final_x is not a number: [$final_x]"
+    return 1
+  fi
+  if ! [[ "$final_y" =~ ^-?[0-9]+$ ]]; then
+    debug_echo "Error: final_y is not a number: [$final_y]"
+    return 1
+  fi
+  if ! [[ "$width" =~ ^[0-9]+$ ]]; then
+    debug_echo "Error: width is not a positive number: [$width]"
+    return 1
+  fi
+  if ! [[ "$height" =~ ^[0-9]+$ ]]; then
+    debug_echo "Error: height is not a positive number: [$height]"
+    return 1
+  fi
+  if [ -z "$mon_name" ] || [[ "$mon_name" =~ ^[0-9] ]]; then
+    debug_echo "Error: mon_name is invalid: [$mon_name]"
+    return 1
+  fi
 
   echo "$final_x $final_y $width $height $mon_name"
 }
@@ -251,8 +294,12 @@ spawn_terminal() {
 
   # Calculate dropdown position for later use
   local pos_info=$(calculate_dropdown_position)
-  if [ $? -ne 0 ]; then
-    debug_echo "Warning: Using fallback positioning"
+  local calc_status=$?
+  debug_echo "Raw pos_info from calculate_dropdown_position: [$pos_info] (status: $calc_status)"
+
+  if [ $calc_status -ne 0 ] || [ -z "$pos_info" ]; then
+    debug_echo "Warning: Position calculation failed, using fallback values"
+    pos_info="1200 400 1400 900 DP-2"  # Fallback: ASUS monitor centered position
   fi
 
   local target_x=$(echo $pos_info | cut -d' ' -f1)
@@ -260,6 +307,14 @@ spawn_terminal() {
   local width=$(echo $pos_info | cut -d' ' -f3)
   local height=$(echo $pos_info | cut -d' ' -f4)
   local monitor_name=$(echo $pos_info | cut -d' ' -f5)
+
+  debug_echo "Parsed values - x=[$target_x] y=[$target_y] w=[$width] h=[$height] name=[$monitor_name]"
+
+  # Validate parsed values
+  if [ -z "$target_x" ] || [ -z "$target_y" ] || [ -z "$width" ] || [ -z "$height" ] || [ -z "$monitor_name" ]; then
+    debug_echo "Error: Could not parse position info. Raw data: [$pos_info]"
+    return 1
+  fi
 
   debug_echo "Target position: ${target_x},${target_y}, size: ${width}x${height}"
 
@@ -346,16 +401,27 @@ if terminal_exists; then
     debug_echo "Monitor focus changed: moving dropdown to $focused_monitor"
     # Calculate new position for focused monitor
     pos_info=$(calculate_dropdown_position)
-    target_x=$(echo $pos_info | cut -d' ' -f1)
-    target_y=$(echo $pos_info | cut -d' ' -f2)
-    width=$(echo $pos_info | cut -d' ' -f3)
-    height=$(echo $pos_info | cut -d' ' -f4)
-    monitor_name=$(echo $pos_info | cut -d' ' -f5)
-    # Move and resize window
-    hyprctl dispatch "hl.dsp.window.move({ x = $target_x, y = $target_y, relative = false, window = \"address:$TERMINAL_ADDR\" })"
-    hyprctl dispatch "hl.dsp.window.resize({ x = $width, y = $height, relative = false, window = \"address:$TERMINAL_ADDR\" })"
-    # Update ADDR_FILE
-    echo "$TERMINAL_ADDR $monitor_name" >"$ADDR_FILE"
+    if [ -n "$pos_info" ]; then
+      target_x=$(echo $pos_info | cut -d' ' -f1)
+      target_y=$(echo $pos_info | cut -d' ' -f2)
+      width=$(echo $pos_info | cut -d' ' -f3)
+      height=$(echo $pos_info | cut -d' ' -f4)
+      monitor_name=$(echo $pos_info | cut -d' ' -f5)
+
+      # Only move if values look reasonable
+      if [ -n "$target_x" ] && [ -n "$target_y" ] && [ -n "$width" ] && [ -n "$height" ] && [ -n "$monitor_name" ]; then
+        # Move and resize window
+        hyprctl dispatch "hl.dsp.window.move({ x = $target_x, y = $target_y, relative = false, window = \"address:$TERMINAL_ADDR\" })" >/dev/null 2>&1
+        hyprctl dispatch "hl.dsp.window.resize({ x = $width, y = $height, relative = false, window = \"address:$TERMINAL_ADDR\" })" >/dev/null 2>&1
+        # Update ADDR_FILE
+        echo "$TERMINAL_ADDR $monitor_name" >"$ADDR_FILE"
+        debug_echo "Moved terminal to $focused_monitor: $target_x,$target_y ${width}x${height}"
+      else
+        debug_echo "Error: Parsed values are invalid, skipping move"
+      fi
+    else
+      debug_echo "Error: Could not calculate new position for monitor change"
+    fi
   fi
 
   if terminal_in_special; then
@@ -376,11 +442,19 @@ if terminal_exists; then
     else
       # Use calculated position (default)
       pos_info=$(calculate_dropdown_position)
-      target_x=$(echo $pos_info | cut -d' ' -f1)
-      target_y=$(echo $pos_info | cut -d' ' -f2)
-      width=$(echo $pos_info | cut -d' ' -f3)
-      height=$(echo $pos_info | cut -d' ' -f4)
-      debug_echo "Using calculated position: ${target_x},${target_y} ${width}x${height}"
+      if [ -n "$pos_info" ]; then
+        target_x=$(echo $pos_info | cut -d' ' -f1)
+        target_y=$(echo $pos_info | cut -d' ' -f2)
+        width=$(echo $pos_info | cut -d' ' -f3)
+        height=$(echo $pos_info | cut -d' ' -f4)
+        debug_echo "Using calculated position: ${target_x},${target_y} ${width}x${height}"
+      else
+        debug_echo "Warning: Calculated position is empty, using safe fallback"
+        target_x=1200
+        target_y=400
+        width=1400
+        height=900
+      fi
     fi
 
     # Use silent move to avoid affecting workspace history
