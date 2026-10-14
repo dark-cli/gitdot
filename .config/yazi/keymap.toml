@@ -1,19 +1,19 @@
-[[manager.keymap]]
+[[mgr.prepend_keymap]]
 on   = [ "o" ]
 run  = "open --interactive"
 desc = "Open with option menu"
 
-[[manager.keymap]]
+[[mgr.prepend_keymap]]
 on   = [ "O" ]
-run  = ""
+run  = "noop"
 desc = "Disabled (use 'o' instead)"
 
-[[manager.keymap]]
+[[mgr.prepend_keymap]]
 on   = [ "Enter" ]
 run  = "open"
 desc = "Open with default opener"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = [ "w" ]
 run  = "plugin what-size"
 desc = "Calculate size of selection or current directory"

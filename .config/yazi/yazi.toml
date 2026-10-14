@@ -1,18 +1,18 @@
-[manager]
+[mgr]
 sort_by = "size"
 sort_reverse = true
 linemode = "size"
 
 [opener]
-nvim = [ { run = "nvim \"$@\"", desc = "Open in nvim", block = true } ]
-glow = [ { run = "glow -t \"$@\"", desc = "Glow", block = true } ]
-swayimg = [ { run = "setsid -f swayimg $1 >/dev/null 2>&1 </dev/null", desc = "Swayimg viewer", block = false } ]
-zathura = [ { run = "setsid -f zathura \"$@\" >/dev/null 2>&1 </dev/null", desc = "Zathura PDF viewer", block = false } ]
-xournalpp = [ { run = "setsid -f xournalpp \"$@\" >/dev/null 2>&1 </dev/null", desc = "Xournal++ PDF editor", block = false } ]
-rnote = [ { run = "setsid -f rnote \"$@\" >/dev/null 2>&1 </dev/null", desc = "Rnote PDF annotator", block = false } ]
-cvlc = [ { run = "cvlc --intf ncurses \"$@\"", desc = "VLC media player", block = true } ]
-vlc = [ { run = "setsid -f vlc \"$@\" >/dev/null 2>&1 </dev/null", desc = "VLC GUI", block = false } ]
-mpv = [ { run = "mpv \"$@\"", desc = "mpv media player", block = true } ]
+nvim = [ { run = "nvim %s", desc = "Open in nvim", block = true } ]
+glow = [ { run = "glow -t %s", desc = "Glow", block = true } ]
+swayimg = [ { run = "setsid -f swayimg %1 >/dev/null 2>&1 </dev/null", desc = "Swayimg viewer", block = false } ]
+zathura = [ { run = "setsid -f zathura %s >/dev/null 2>&1 </dev/null", desc = "Zathura PDF viewer", block = false } ]
+xournalpp = [ { run = "setsid -f xournalpp %s >/dev/null 2>&1 </dev/null", desc = "Xournal++ PDF editor", block = false } ]
+rnote = [ { run = "setsid -f rnote %s >/dev/null 2>&1 </dev/null", desc = "Rnote PDF annotator", block = false } ]
+cvlc = [ { run = "cvlc --intf ncurses %s", desc = "VLC media player", block = true } ]
+vlc = [ { run = "setsid -f vlc %s >/dev/null 2>&1 </dev/null", desc = "VLC GUI", block = false } ]
+mpv = [ { run = "mpv %s", desc = "mpv media player", block = true } ]
 
 [open]
 rules = [
