@@ -36,7 +36,7 @@ hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen({ all = true })) --: maximi
 hl.bind("SUPER + Space", hl.dsp.window.float({ action = "toggle" })) --: toggle floating
 hl.bind("SUPER + SHIFT + Space", hl.dsp.window.center({ respect_reserved = true })) --: center floating window on screen
 hl.bind("SUPER + ALT + Space", hl.dsp.exec_cmd("hyprctl dispatch workspaceopt allfloat")) --: float all windows on workspace
-hl.bind("SUPER + SHIFT + Return", hl.dsp.exec_cmd("sh -c '" .. SCRIPTS .. "/Dropterminal.sh " .. TERM .. "'")) --: toggle dropdown terminal
+hl.bind("SUPER + SHIFT + Return", require("lua.helpers.dropdown").toggle) --: toggle dropdown terminal
 
 -- Desktop zoom (magnifier)
 hl.bind("SUPER + ALT + mouse_down", hl.dsp.exec_cmd("hyprctl keyword cursor:zoom_factor \"$(hyprctl getoption cursor:zoom_factor | awk 'NR==1 {factor = $2; if (factor < 1) {factor = 1}; print factor * 2.0}')\"")) --: zoom in (desktop magnifier)

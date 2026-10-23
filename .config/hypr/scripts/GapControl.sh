@@ -23,10 +23,8 @@ case "$action" in
         hyprctl keyword general:gaps_in $new_in
         hyprctl keyword general:gaps_out $new_out
         "$HOME/.config/hypr/scripts/ScratchpadSyncGaps.sh" 2>/dev/null || true
-        # Reposition dropdown terminal if it exists
-        if [ -f "/tmp/dropdown_terminal_addr" ]; then
-          "$HOME/.config/hypr/scripts/Dropterminal.sh" reposition >/dev/null 2>&1 &
-        fi
+        # Reposition dropdown terminal if it is shown
+        hyprctl eval 'require("lua.helpers.dropdown").reposition()' >/dev/null 2>&1
         notify-send -u low -t 1000 "Gaps Increased" "In: $new_in | Out: $new_out"
         ;;
     dec)
@@ -42,10 +40,8 @@ case "$action" in
         hyprctl keyword general:gaps_in $new_in
         hyprctl keyword general:gaps_out $new_out
         "$HOME/.config/hypr/scripts/ScratchpadSyncGaps.sh" 2>/dev/null || true
-        # Reposition dropdown terminal if it exists
-        if [ -f "/tmp/dropdown_terminal_addr" ]; then
-          "$HOME/.config/hypr/scripts/Dropterminal.sh" reposition >/dev/null 2>&1 &
-        fi
+        # Reposition dropdown terminal if it is shown
+        hyprctl eval 'require("lua.helpers.dropdown").reposition()' >/dev/null 2>&1
         notify-send -u low -t 1000 "Gaps Decreased" "In: $new_in | Out: $new_out"
         ;;
     reset)
@@ -53,10 +49,8 @@ case "$action" in
         hyprctl keyword general:gaps_in $default_in
         hyprctl keyword general:gaps_out $default_out
         "$HOME/.config/hypr/scripts/ScratchpadSyncGaps.sh" 2>/dev/null || true
-        # Reposition dropdown terminal if it exists
-        if [ -f "/tmp/dropdown_terminal_addr" ]; then
-          "$HOME/.config/hypr/scripts/Dropterminal.sh" reposition >/dev/null 2>&1 &
-        fi
+        # Reposition dropdown terminal if it is shown
+        hyprctl eval 'require("lua.helpers.dropdown").reposition()' >/dev/null 2>&1
         notify-send -u low -t 1000 "Gaps Reset" "In: $default_in | Out: $default_out"
         ;;
     *)

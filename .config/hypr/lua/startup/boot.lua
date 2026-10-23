@@ -29,8 +29,8 @@ hl.on("hyprland.start", function()
   -- Keyboard layout initialization
   hl.exec_cmd(SCRIPTS .. "/KeybindsLayoutInit.sh")
 
-  -- Dropdown terminal (pyprland scratchpad)
-  hl.exec_cmd(SCRIPTS .. "/Dropterminal.sh kitty &")
+  -- Dropdown terminal: start it hidden in the scratchpad (helpers/dropdown.lua)
+  require("lua.helpers.dropdown").spawn(true)
 
   -- ============================================
   -- AUTHENTICATION & SYSTEM
