@@ -109,8 +109,9 @@ hl.bind("SUPER + M", hl.dsp.exec_cmd("hyprctl dispatch splitratio 0.3")) --: set
 -- WINDOW CYCLING
 -- ============================================
 
-hl.bind("ALT + Tab", hl.dsp.window.cycle_next()) --: cycle to next window
-hl.bind("ALT + Tab", hl.dsp.window.bring_to_top()) --: bring focused window to top
+-- If the focused window is fullscreen, fullscreen moves to the next window
+-- instantly (Hyprland 0.51 behaviour); see helpers/fullscreen_cycle.lua
+hl.bind("ALT + Tab", require("lua.helpers.fullscreen_cycle").cycle) --: cycle to next window
 
 -- ============================================
 -- SPECIAL KEYS / HOT KEYS (Audio, Media, etc.)

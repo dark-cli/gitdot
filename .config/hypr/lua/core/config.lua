@@ -98,7 +98,10 @@ hl.config({
   },
 
   render = {
-    direct_scanout = true,
+    -- Off, as in the pre-Lua config (it was mistranslated to true during the
+    -- migration). Direct scanout bypasses the compositor for fullscreen apps
+    -- and glitches fullscreen transitions, especially on NVIDIA.
+    direct_scanout = false,
   },
 
   -- NVIDIA-specific: the "anti flicker" logic in Hyprland's own OpenGL
@@ -142,6 +145,11 @@ hl.config({
     animate_manual_resizes = true,
     mouse_move_focuses_monitor = true,
     focus_on_activate = true,
+    -- What happens when a window gets focus while another window on the
+    -- workspace is fullscreen. Default (2) drops fullscreen, which made
+    -- ALT+Tab and newly opened floating windows exit fullscreen.
+    -- 1 = the newly focused window takes over fullscreen instead.
+    on_focus_under_fullscreen = 1,
     always_follow_on_dnd = true,
     layers_hog_keyboard_focus = true,
     allow_session_lock_restore = true,
